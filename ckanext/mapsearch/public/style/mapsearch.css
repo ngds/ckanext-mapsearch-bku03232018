@@ -3,22 +3,24 @@ html, body {
 }
 
 div[role=main] {
-    min-height: 100px;
+    min-height: 50px;
+    max-height: 700px;
     height: 100%;
+    padding-bottom: 100px;
 }
 
 #content.container {
-    height: 80%;
+    height: inherit;
 }
 
 .wrapper {
-    height: 100%;
+    height: inherit;
 }
 
 .map-search {
-    height: 100%;
+    height: inherit;
 }
 
 #map {
-    height: 100%;
+    height: inherit;
 }
