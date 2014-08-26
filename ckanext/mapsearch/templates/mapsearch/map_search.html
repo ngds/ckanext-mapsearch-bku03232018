@@ -1,0 +1,11 @@
+{% extends "mapsearch/base.html" %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Map Search'), controller='ckanext.mapsearch.controllers.view:ViewController', action='render_map_search' %}</li>
+{% endblock %}
+
+{% block primary %}
+  <p>Hello, world!</p>
+{% endblock %}
+
+{% block secondary %}{% endblock %}

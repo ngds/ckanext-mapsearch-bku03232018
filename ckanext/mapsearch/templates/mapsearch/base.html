@@ -1,0 +1,12 @@
+{% extends "page.html" %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="/style/mapsearch.css" />
+  <link rel="stylesheet" href="/vendor/leaflet-0.7.3/leaflet.css" />
+{% endblock %}
+
+{%- block scripts -%}
+  {{ super() }}
+  <script src="/vendor/leaflet-0.7.3/leaflet.js"></script>
+{% endblock %}
