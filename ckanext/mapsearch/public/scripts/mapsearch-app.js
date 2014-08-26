@@ -7,7 +7,8 @@ geo.initBounds = L.latLngBounds(
 );
 
 geo.mapOpts = {
-
+  attributionControl: true,
+  minZoom: 2
 };
 
 geo.map = L.map('map', geo.mapOpts).fitBounds(geo.initBounds);
@@ -15,8 +16,15 @@ geo.map = L.map('map', geo.mapOpts).fitBounds(geo.initBounds);
 geo.baseMap = new geo.views.TileLayerView({
   model: new geo.models.TileLayer({
     id: 'osm-basemap',
-    serviceUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    serviceUrl: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg',
     active: true,
-    detectRetina: true
+    layerOptions: {
+      subdomains: '1234',
+      attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">'
+        + 'MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetm'
+        + 'ap.org">OpenStreetMap</a> contributors, <a href="http://creative'
+        + 'commons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+      detectRetina: true
+    }
   })
 }).render();

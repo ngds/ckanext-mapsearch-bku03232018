@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+}
+
+div[role=main] {
+    min-height: 100px;
+    height: 100%;
+}
+
+#content.container {
+    height: 80%;
+}
+
+.wrapper {
+    height: 100%;
+}
+
+.map-search {
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}

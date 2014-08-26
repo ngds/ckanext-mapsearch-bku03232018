@@ -10,7 +10,6 @@ geo.models.LayerModel = Backbone.Model.extend({
     layerOptions: 'undefined',
     layer: 'undefined',
     active: false,
-    detectRetina: true,
     isExtent: false
   },
   initialize: function (options) {
@@ -26,12 +25,14 @@ geo.models.TileLayer = geo.models.LayerModel.extend({
   createLayer: function (options, callback) {
     var model
       , layer
-      , url;
+      , url
+      , layerOpts;
 
     model = this;
+    layerOpts = options.layerOptions;
     url = model.get('serviceUrl');
     if (url) {
-      layer = new L.tileLayer(url, options);
+      layer = new L.tileLayer(url, layerOpts);
       callback(layer);
     }
   }
