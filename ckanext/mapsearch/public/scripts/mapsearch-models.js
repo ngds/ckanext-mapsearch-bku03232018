@@ -60,9 +60,25 @@ geo.models.PackageSearch = Backbone.Model.extend({
     drawnItems = new L.FeatureGroup();
     resultsLayer = new L.MarkerClusterGroup({
       iconCreateFunction: function (cluster) {
-        var html = '<b>' + cluster.getChildCount() + '</b>'
-          , className = 'clusterfuck'
+        var count
+          , html
+          , className
           ;
+
+        count = cluster.getChildCount();
+        if (count < 10) {
+          html = '<b style="margin-left:10px;vertical-align:-7px;">'
+            + count + '</b>';
+        }
+        if (count >= 10 && count < 100) {
+          html = '<b style="margin-left:6px;vertical-align:-7px;">'
+            + count + '</b>';
+        }
+        if (count >= 100 && count < 1000) {
+          html = '<b style="margin-left:1px;vertical-align:-7px;">'
+            + count + '</b>';
+        }
+        className = 'clusterfuck';
         return new L.DivIcon({html: html, className: className});
       }
     });
