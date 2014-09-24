@@ -40,7 +40,7 @@ geo.models.TileLayer = geo.models.LayerModel.extend({
 
 geo.models.PackageSearch = Backbone.Model.extend({
   defaults: {
-    url: '/api/action/get_package_info',
+    url: '/api/action/get_package_json',
     type: 'POST',
     dataType: 'JSON',
     rows: 50,
