@@ -42,11 +42,16 @@ geo.views.PackageSearch = Backbone.View.extend({
   },
   submitSearch: function () {
     var model = this.model
+      , view = this
       , text = $('#text-search').val()
       ;
     model.set('query', text);
     model.postSearch(function (response) {
-      console.log(response);
+      view.renderResponse(response);
     })
+  },
+  renderResponse: function (data) {
+    var model = this.model;
+    model.makeGeoJson(data);
   }
 });

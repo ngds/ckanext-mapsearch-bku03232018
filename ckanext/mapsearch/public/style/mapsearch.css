@@ -95,3 +95,15 @@ html, body {
 #map-content-tab #content-window #text-search {
     width: 97%;
 }
+
+.clusterfuck {
+    background: orange;
+    width: 25px !important;
+    height: 25px !important;
+    border-radius: 50%;
+}
+
+.clusterfuck b {
+    margin-left: 5px;
+    margin-top: 2px;
+}

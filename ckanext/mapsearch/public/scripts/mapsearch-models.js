@@ -47,17 +47,32 @@ geo.models.PackageSearch = Backbone.Model.extend({
     page: 1,
     start: 0,
     query: '',
-    extras: '',
+    extras: {'ext_bbox': '-180,-90,180,90'},
     sort: '',
-    featureGroup: '',
+    queryFeatureGroup: '',
+    resultsFeatureGroup: ''
   },
   initialize: function () {
-    var drawnItems = new L.FeatureGroup();
-    this.set('featureGroup', drawnItems);
-    geo.map.addLayer(this.get('featureGroup'));
+    var drawnItems
+      , resultsLayer
+      ;
+
+    drawnItems = new L.FeatureGroup();
+    resultsLayer = new L.MarkerClusterGroup({
+      iconCreateFunction: function (cluster) {
+        var html = '<b>' + cluster.getChildCount() + '</b>'
+          , className = 'clusterfuck'
+          ;
+        return new L.DivIcon({html: html, className: className});
+      }
+    });
+    this.set('queryFeatureGroup', drawnItems);
+    this.set('resultsFeatureGroup', resultsLayer);
+    geo.map.addLayer(this.get('queryFeatureGroup'));
+    geo.map.addLayer(this.get('resultsFeatureGroup'));
   },
   makeBBoxQuery: function (callback) {
-    var featureGroup = this.get('featureGroup');
+    var featureGroup = this.get('queryFeatureGroup');
     new L.Draw.Rectangle(geo.map).enable();
     geo.map.on('draw:created', function (query) {
       var bbox;
@@ -69,10 +84,14 @@ geo.models.PackageSearch = Backbone.Model.extend({
   },
   postSearch: function (callback) {
     var model
+      , featureGroup
       , qs
       , data
       ;
+
     model = this;
+    featureGroup = model.get('queryFeatureGroup');
+    featureGroup.clearLayers();
     qs = model.get('query') + '+res_url:*+';
     data = JSON.stringify({
       extras: model.get('extras'),
@@ -91,5 +110,57 @@ geo.models.PackageSearch = Backbone.Model.extend({
         callback(response);
       }
     })
+  },
+  makeGeoJson: function (input) {
+    var model
+      , result
+      , layer
+      , rec
+      , randomize
+      , coords
+      , bounds
+      , center
+      , geoJson
+      , i
+      ;
+
+    model = this;
+    layer = model.get('resultsFeatureGroup');
+    result = input['result']['packages'];
+    for (i = 0; i < result.length; i++) {
+      rec = result[i];
+      randomize = Math.floor(Math.random() * 1000000000000000000000);
+      coords = JSON.parse(rec.bbox[0]);
+      if (coords.type === 'Polygon') {
+        bounds = L.latLngBounds([
+          [coords.coordinates[0][0][1], coords.coordinates[0][0][0]],
+          [coords.coordinates[0][2][1], coords.coordinates[0][2][0]]
+        ]);
+        center = bounds.getCenter();
+      }
+      if (coords.type === 'Point') {
+        center = {
+          lat: parseFloat(coords.coordinates[1]),
+          lng: parseFloat(coords.coordinates[0])
+        }
+      }
+      geoJson = {
+        'type': 'Feature',
+        'properties': {
+          'feature_id': randomize,
+          'title': rec.title,
+          'name': rec.name,
+          'notes': rec.notes,
+          'pkg_id': rec.id,
+          'resources': rec.resources,
+          'bbox': bounds
+        },
+        'geometry': {
+          'type': 'Point',
+          'coordinates': [center.lat, center.lng]
+        }
+      };
+      layer.addLayer(new L.Marker(geoJson['geometry']['coordinates']));
+    }
   }
 });
