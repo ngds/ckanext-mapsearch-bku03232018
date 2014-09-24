@@ -37,3 +37,43 @@ geo.models.TileLayer = geo.models.LayerModel.extend({
     }
   }
 });
+
+geo.models.PackageSearch = Backbone.Model.extend({
+  defaults: {
+    url: '/api/action/get_package_info',
+    type: 'POST',
+    dataType: 'JSON',
+    rows: 50,
+    page: 1,
+    start: 0,
+    query: '',
+    extras: '',
+    sort: ''
+  },
+  makeSearch: function (callback) {
+    var model
+      , qs
+      , data
+      ;
+
+    model = this;
+    qs = model.query + '+res_url:*+';
+    data = JSON.stringify({
+      extras: model.extras,
+      q: qs,
+      rows: model.rows,
+      sort: model.sort,
+      start: model.start
+    });
+
+    $.ajax({
+      url: model.url,
+      type: model.type,
+      dataType: model.dataType,
+      data: data,
+      success: function (response) {
+        callback(response);
+      }
+    })
+  }
+});

@@ -10,11 +10,15 @@
   <link rel="stylesheet" href="/style/mapsearch.css" />
   <link rel="stylesheet" href="/vendor/leaflet-0.7.3/leaflet.css" />
   <link rel="stylesheet" href="/vendor/bootstrap-responsive-v2.3.2.min.css" />
+  <link rel="stylesheet" href="/vendor/leaflet-draw/leaflet.draw.css" />
+  <link rel="stylesheet" href="/vendor/leaflet-cluster/MarkerCluster.css" />
 {% endblock %}
 
 {%- block scripts -%}
   {{ super() }}
   <script src="/vendor/leaflet-0.7.3/leaflet.js"></script>
+  <script src="/vendor/leaflet-draw/leaflet.draw.js"></script>
+  <script src="/vendor/leaflet-cluster/leaflet.markercluster.js"></script>
   <script src="/vendor/jquery-1.11.0.min.js"></script>
   <script src="/vendor/underscore-v1.6.0.min.js"></script>
   <script src="/vendor/backbone-v1.1.2.min.js"></script>

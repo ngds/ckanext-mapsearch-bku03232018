@@ -11,3 +11,7 @@ geo.views.TileLayerView = Backbone.View.extend({
     if (this.model.get('active')) return this.model;
   }
 });
+
+geo.views.PackageSearchView = Backbone.View.extend({
+
+});
