@@ -92,14 +92,6 @@ html, body {
     padding: 8px;
 }
 
-#map-content-tab #content-window .input-append {
-    width: 100%;
-}
-
-#map-content-tab #content-window .input-append input {
-    width:77%;
-}
-
-#map-content-tab #content-window .input-append button {
-    width: 20%;
+#map-content-tab #content-window #text-search {
+    width: 97%;
 }

@@ -48,28 +48,44 @@ geo.models.PackageSearch = Backbone.Model.extend({
     start: 0,
     query: '',
     extras: '',
-    sort: ''
+    sort: '',
+    featureGroup: '',
   },
-  makeSearch: function (callback) {
+  initialize: function () {
+    var drawnItems = new L.FeatureGroup();
+    this.set('featureGroup', drawnItems);
+    geo.map.addLayer(this.get('featureGroup'));
+  },
+  makeBBoxQuery: function (callback) {
+    var featureGroup = this.get('featureGroup');
+    new L.Draw.Rectangle(geo.map).enable();
+    geo.map.on('draw:created', function (query) {
+      var bbox;
+      featureGroup.clearLayers();
+      featureGroup.addLayer(query.layer);
+      bbox = query.layer.getBounds().toBBoxString();
+      callback(bbox);
+    })
+  },
+  postSearch: function (callback) {
     var model
       , qs
       , data
       ;
-
     model = this;
-    qs = model.query + '+res_url:*+';
+    qs = model.get('query') + '+res_url:*+';
     data = JSON.stringify({
-      extras: model.extras,
+      extras: model.get('extras'),
       q: qs,
-      rows: model.rows,
-      sort: model.sort,
-      start: model.start
+      rows: model.get('rows'),
+      sort: model.get('sort'),
+      start: model.get('start')
     });
 
     $.ajax({
-      url: model.url,
-      type: model.type,
-      dataType: model.dataType,
+      url: model.get('url'),
+      type: model.get('type'),
+      dataType: model.get('dataType'),
       data: data,
       success: function (response) {
         callback(response);

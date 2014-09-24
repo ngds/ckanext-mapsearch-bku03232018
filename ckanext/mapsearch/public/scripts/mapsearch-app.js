@@ -13,25 +13,6 @@ geo.mapOpts = {
 
 geo.map = L.map('map', geo.mapOpts).fitBounds(geo.initBounds);
 
-geo.drawings = new L.FeatureGroup();
-
-geo.drawControl = new L.Control.Draw({
-  position: 'topleft',
-  draw: {
-    polyline: false,
-    circle: false,
-    marker: false,
-    polygon: false
-  },
-  edit: {
-    featureGroup: geo.drawings,
-    remove: false,
-    edit: false
-  }
-});
-
-geo.map.addControl(geo.drawControl);
-
 geo.baseMap = new geo.views.TileLayerView({
   model: new geo.models.TileLayer({
     id: 'osm-basemap',
@@ -51,3 +32,8 @@ geo.baseMap = new geo.views.TileLayerView({
 geo.searchContentTab = new geo.views.SearchContentTab({
   el: $('.navbar')
 }).render();
+
+geo.packageSearch = new geo.views.PackageSearch({
+  el: $('#map-content-tab'),
+  model: new geo.models.PackageSearch({})
+});
