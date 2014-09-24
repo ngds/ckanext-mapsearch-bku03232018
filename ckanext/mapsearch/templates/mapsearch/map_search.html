@@ -1,12 +1,30 @@
 {% extends "mapsearch/base.html" %}
 
-{% block breadcrumb_content %}
-  <li class="active">{% link_for _('Map Search'), controller='ckanext.mapsearch.controllers.view:ViewController', action='render_map_search' %}</li>
-{% endblock %}
-
 {% block primary %}
   <div class="map-search">
     <div id="map"></div>
+    <div class="container">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="toolbar">
+            <ol class="breadcrumb">
+              <li class="home">
+                <a href="/">
+                  <i class="icon-home"></i>
+                  <span> Home</span>
+                </a>
+              </li>
+              <li class="active">{% link_for _('Map Search'), controller='ckanext.mapsearch.controllers.view:ViewController', action='render_map_search' %}</li>
+            </ol>
+          </div>
+          <button type="button" class="btn pull-right" data-target="map-search-content">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}
 
