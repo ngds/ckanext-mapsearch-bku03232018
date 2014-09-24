@@ -3,7 +3,7 @@ html, body {
 }
 
 .map-search {
-    min-height: 500px;
+    min-height: 700px;
 }
 
 #map {
@@ -67,4 +67,39 @@ html, body {
 
 .map-search .leaflet-top {
     margin-top: 52px;
+}
+
+#map-content-tab {
+    position: absolute;
+    background-color: #ffffff;
+    margin: 8px;
+    margin-right: 11px;
+    padding-right: 15px;
+    right: 0;
+    top: 53px;
+    bottom: 10px;
+    display: none;
+    width: 425px;
+    border-radius: 4px;
+}
+
+#map-content-tab.active {
+    display: block;
+}
+
+#map-content-tab #content-window {
+    width: 100%;
+    padding: 8px;
+}
+
+#map-content-tab #content-window .input-append {
+    width: 100%;
+}
+
+#map-content-tab #content-window .input-append input {
+    width:77%;
+}
+
+#map-content-tab #content-window .input-append button {
+    width: 20%;
 }

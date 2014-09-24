@@ -12,6 +12,20 @@ geo.views.TileLayerView = Backbone.View.extend({
   }
 });
 
-geo.views.PackageSearchView = Backbone.View.extend({
-
+geo.views.SearchContentTab = Backbone.View.extend({
+  events: {
+    'click button': 'configureContent'
+  },
+  configureContent: function (e) {
+    console.log(e);
+    var view = this
+      , uid = e.currentTarget.id
+      , contentTab = $('#map-content-tab')
+      ;
+    if (contentTab.hasClass('active')) {
+      contentTab.removeClass('active');
+    } else {
+      contentTab.addClass('active');
+    }
+  }
 });

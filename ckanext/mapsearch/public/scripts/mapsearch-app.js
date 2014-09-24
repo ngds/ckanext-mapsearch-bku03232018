@@ -47,3 +47,7 @@ geo.baseMap = new geo.views.TileLayerView({
     }
   })
 }).render();
+
+geo.searchContentTab = new geo.views.SearchContentTab({
+  el: $('.navbar')
+}).render();
