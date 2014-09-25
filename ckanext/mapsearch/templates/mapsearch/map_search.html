@@ -27,16 +27,24 @@
     </div>
     <div id="map-content-tab" class="active">
       <div id="content-window">
-        <div class="search-input-controls">
-          <input type="text" id="text-search">
-          <button id="draw-area" class="btn btn-large btn-block">Draw an area</button>
-          <button id="submit-search" class="btn btn-large btn-block">Search</button>
+        <div id="content-tab-btns" class="btn-group btn-justified">
+          <button id="toggle-search-tab" class="btn active">Make Search</button>
+          <button id="toggle-results-tab" class="btn">View Results</button>
         </div>
-        <div class="search-results">
-
+        <div class="map-tab-pane active" id="search-tab">
+          <div class="search-input-controls">
+            <input type="text" id="text-search">
+            <button id="draw-area" class="btn btn-large btn-block">Draw an area</button>
+            <button id="submit-search" class="btn btn-large btn-block">Search</button>
+          </div>
         </div>
-        <div class="search-controls">
+        <div class="map-tab-pane" id="results-tab">
+          <div class="search-results">
 
+          </div>
+          <div class="search-controls">
+
+          </div>
         </div>
       </div>
     </div>

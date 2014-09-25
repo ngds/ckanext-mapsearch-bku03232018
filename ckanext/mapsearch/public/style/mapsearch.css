@@ -109,3 +109,24 @@ html, body {
 .clusterfuck b {
     font-size: 16px;
 }
+
+.btn-justified{
+    display: inline-block;
+    width: 100%;
+    float: left;
+    margin-bottom: 8px;
+}
+
+.btn-justified .btn{
+    display: table-cell !important;
+    float: none;
+    width: 50%;
+}
+
+.map-tab-pane {
+    display: none;
+}
+
+.map-tab-pane.active {
+    display: block;
+}

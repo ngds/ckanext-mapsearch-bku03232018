@@ -29,11 +29,15 @@ geo.baseMap = new geo.views.TileLayerView({
   })
 }).render();
 
-geo.searchContentTab = new geo.views.SearchContentTab({
+geo.searchContent = new geo.views.SearchContent({
   el: $('.navbar')
+}).render();
+
+geo.searchContentTabs = new geo.views.SearchContentTabs({
+  el: $('#content-tab-btns')
 }).render();
 
 geo.packageSearch = new geo.views.PackageSearch({
   el: $('#map-content-tab'),
   model: new geo.models.PackageSearch({})
-});
+}).render();

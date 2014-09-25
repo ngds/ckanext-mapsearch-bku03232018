@@ -12,7 +12,7 @@ geo.views.TileLayerView = Backbone.View.extend({
   }
 });
 
-geo.views.SearchContentTab = Backbone.View.extend({
+geo.views.SearchContent = Backbone.View.extend({
   events: {
     'click button': 'configureContent'
   },
@@ -25,6 +25,50 @@ geo.views.SearchContentTab = Backbone.View.extend({
       contentTab.removeClass('active');
     } else {
       contentTab.addClass('active');
+    }
+  }
+});
+
+geo.views.SearchContentTabs = Backbone.View.extend({
+  events: {
+    'click button': 'switchTabs'
+  },
+  switchTabs: function (e) {
+    var view
+      , target
+      , other
+      ;
+
+    view = this;
+    target = e.currentTarget.id;
+    target = target.split('toggle-')[1];
+
+    if (target === 'search-tab') {
+      targetBtn = $('#toggle-search-tab');
+      otherBtn = $('#toggle-results-tab');
+
+      targetBtn.addClass('active');
+      otherBtn.removeClass('active');
+
+      targetTab = $('#search-tab');
+      otherTab = $('#results-tab');
+
+      otherTab.removeClass('active');
+      targetTab.addClass('active');
+    }
+
+    if (target === 'results-tab') {
+      targetBtn = $('#toggle-results-tab');
+      otherBtn = $('#toggle-search-tab');
+
+      targetBtn.addClass('active');
+      otherBtn.removeClass('active');
+
+      targetTab = $('#results-tab');
+      otherTab = $('#search-tab');
+
+      otherTab.removeClass('active');
+      targetTab.addClass('active');
     }
   }
 });
