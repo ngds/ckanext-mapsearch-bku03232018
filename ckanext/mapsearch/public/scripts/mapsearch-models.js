@@ -98,6 +98,34 @@ geo.models.PackageSearch = Backbone.Model.extend({
       callback(bbox);
     })
   },
+  makeSearchResult: function (data) {
+    var head
+      , body
+      ;
+
+    head = (function () {
+      var id
+        , title
+        , desc
+        , html
+        ;
+      id = data.properties.feature_id;
+      title = data.properties.title;
+      desc = data.properties.notes;
+      if (desc.length > 200) {
+        desc = desc.substr(0, 200) + '...';
+      }
+      html = '<li class="map-search-result result-' + id + '" >';
+      html += '<div class="accordion" id="accordion-search">';
+      html += '<div class="accordion-group">';
+      html += '<div class="accordion-heading">';
+      html += '<a class="accordion-toggle id-' + id + '" data-toggle="collapse" data-parent="#accordion-search" href="#collapse-' + id + '">' + title + '</a>';
+      html += '<div class=package-description><p>' + desc + '</p></div>';
+      html += '</div>';
+      html += '</div></div></li>';
+      $('#search-results .results').append(html);
+    })();
+  },
   postSearch: function (callback) {
     var model
       , featureGroup
@@ -176,6 +204,7 @@ geo.models.PackageSearch = Backbone.Model.extend({
           'coordinates': [center.lat, center.lng]
         }
       };
+      model.makeSearchResult(geoJson);
       layer.addLayer(new L.Marker(geoJson['geometry']['coordinates']));
     }
   }
