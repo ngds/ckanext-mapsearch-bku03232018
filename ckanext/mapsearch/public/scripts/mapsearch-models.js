@@ -101,7 +101,66 @@ geo.models.PackageSearch = Backbone.Model.extend({
   makeSearchResult: function (data) {
     var head
       , body
+      , resources
+      , resource
+      , resourceTabs
+      , links
+      , i
       ;
+
+    console.log(data);
+
+    function makeResourceTab (url, text) {
+      var html = '<div class="accordion-group" id="accordion-search-result">';
+      html += '<div class="accordion-heading">';
+      html += '<a class="data-ogc" target="_blank" href="'
+        + url + '">' + text + '</a>';
+      html += '</div></div>';
+      return html;
+    }
+
+    resources = data.properties.resources;
+    resourceTabs = [];
+    for (i = 0; i < resources.length; i++) {
+      resource = resources[i];
+      if (resource.format.toLowerCase() === 'html') {
+        resourceTabs.push(makeResourceTab(resource.url, resource.name));
+      }
+      if (resource.format.toLowerCase() === 'wms') {
+        resourceTabs.push(makeResourceTab(resource.url, 'WMS Capabilities'));
+      }
+      if (resource.format.toLowerCase() === 'wfs') {
+        resourceTabs.push(makeResourceTab(resource.url, 'WFS Capabilities'));
+      }
+      if (resource.format.toLowerCase() === 'csv') {
+        resourceTabs.push(makeResourceTab(resource.url, 'CSV Resource'));
+      }
+      if (resource.format.toLowerCase() === 'pdf') {
+        resourceTabs.push(makeResourceTab(resource.url, 'PDF Resource'));
+      }
+      if (resource.format.toLowerCase() === 'zip') {
+        resourceTabs.push(makeResourceTab(resource.url, 'ZIP Resource'));
+      }
+      if (resource.format.indexOf('ms-excel') > 0) {
+        resourceTabs.push(makeResourceTab(resource.url, 'MS Excel Resource'));
+      }
+      if (resource.format.indexOf('openxml') > 0) {
+        resourceTabs.push(makeResourceTab(resource.url, 'MS Office Resource'));
+      }
+      if (resource.url.indexOf('notifications.usgin.org') > 0) {
+        resourceTabs.push(makeResourceTab(resource.url, 'Service Notifications'));
+      }
+      if (resource.url.indexOf('.tif') > 0 || resource.url.indexOf('.tiff') > 0) {
+        resourceTabs.push(makeResourceTab(resource.url, 'TIFF Resource'));
+      }
+      if (!resource.format && resource.url) {
+        resourceTabs.push(makeResourceTab(resource.url, 'External Website'))
+      }
+    }
+
+    links = resourceTabs.join('');
+
+    console.log(links);
 
     head = (function () {
       var id
@@ -115,12 +174,18 @@ geo.models.PackageSearch = Backbone.Model.extend({
       if (desc.length > 200) {
         desc = desc.substr(0, 200) + '...';
       }
+      if (desc.length < 199) {
+        desc = 'No description available';
+      }
       html = '<li class="map-search-result result-' + id + '" >';
       html += '<div class="accordion" id="accordion-search">';
       html += '<div class="accordion-group">';
       html += '<div class="accordion-heading">';
       html += '<a class="accordion-toggle id-' + id + '" data-toggle="collapse" data-parent="#accordion-search" href="#collapse-' + id + '">' + title + '</a>';
       html += '<div class=package-description><p>' + desc + '</p></div>';
+      html += '</div>';
+      html += '<div id="collapse-' + id + '" class="accordion-body collapse">';
+      html += links;
       html += '</div>';
       html += '</div></div></li>';
       $('#search-results .results').append(html);
