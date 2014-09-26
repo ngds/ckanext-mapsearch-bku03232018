@@ -50,7 +50,9 @@ geo.models.PackageSearch = Backbone.Model.extend({
     extras: {'ext_bbox': '-180,-90,180,90'},
     sort: '',
     queryFeatureGroup: '',
-    resultsFeatureGroup: ''
+    resultsFeatureGroup: '',
+    wmsLayerGroup: {},
+    bboxLayerGroup: {}
   },
   initialize: function () {
     var drawnItems
@@ -104,10 +106,13 @@ geo.models.PackageSearch = Backbone.Model.extend({
       type: 'POST',
       data: JSON.stringify({'id': id}),
       success: function (res) {
-
+        if (res['result']['Error']) {
+          callback('Error');
+        }
+        callback(null, res.result);
       },
       error: function (err) {
-
+        callback(err);
       }
     })
   },
@@ -118,12 +123,14 @@ geo.models.PackageSearch = Backbone.Model.extend({
       , resources
       , resource
       , resourceTabs
+      , package
+      , packageTabs
       , links
       , i
       ;
 
     model = this;
-    
+
     function makeResourceTab (url, text) {
       var html = '<div class="accordion-group" id="accordion-search-result">';
       html += '<div class="accordion-heading">';
@@ -133,13 +140,27 @@ geo.models.PackageSearch = Backbone.Model.extend({
       return html;
     }
 
-    function showWmsTab (url, text) {
+    function makeWmsTab (id, text) {
       html = '<div class="accordion-group" id="accordion-search-result">';
       html += '<div class="accordion-heading">';
-      html += '<a id="' + data.id + '" class="toggle-layer-wms wms-absent">Show Web Map Service</a>';
+      html += '<a id="' + id + '" href="#" class="toggle-wms-layer">' + text + '</a>';
       html += '</div></div>';
       return html;
     }
+
+    function makeBboxTab (id, data, text) {
+      html = '<div class="accordion-group" id="accordion-search-result">';
+      html += '<div class="accordion-heading">';
+      html += '<a id=' + id + ' class="toggle-bbox" value="'
+        + data + '" href="#">' + text + '</a>';
+      html += '</div></div>';
+      return html;
+    }
+
+    package = data.properties;
+    packageTabs = [
+      makeBboxTab(package.pkg_id, package.bboxString, 'Show Area on Map')
+    ].join('');
 
     resources = data.properties.resources;
     resourceTabs = [];
@@ -148,7 +169,8 @@ geo.models.PackageSearch = Backbone.Model.extend({
       if (resource.format.toLowerCase() === 'html') {
         resourceTabs.push(makeResourceTab(resource.url, resource.name));
       }
-      if (resource.format.toLowerCase() === 'wms') {
+      if (resource.format.toLowerCase() === 'wms' && resource.url.indexOf('kml') < 0) {
+        resourceTabs.push(makeWmsTab(resource.id, 'Show Web Map Service'));
         resourceTabs.push(makeResourceTab(resource.url, 'WMS Capabilities'));
       }
       if (resource.format.toLowerCase() === 'wfs') {
@@ -205,6 +227,7 @@ geo.models.PackageSearch = Backbone.Model.extend({
       html += '<div class=package-description><p>' + desc + '</p></div>';
       html += '</div>';
       html += '<div id="collapse-' + id + '" class="accordion-body collapse">';
+      html += packageTabs;
       html += links;
       html += '</div>';
       html += '</div></div></li>';
@@ -247,6 +270,7 @@ geo.models.PackageSearch = Backbone.Model.extend({
       , rec
       , randomize
       , coords
+      , bboxString
       , bounds
       , center
       , geoJson
@@ -265,6 +289,11 @@ geo.models.PackageSearch = Backbone.Model.extend({
           [coords.coordinates[0][0][1], coords.coordinates[0][0][0]],
           [coords.coordinates[0][2][1], coords.coordinates[0][2][0]]
         ]);
+        bboxString = [coords.coordinates[0][0][0],
+                      coords.coordinates[0][0][1],
+                      coords.coordinates[0][2][0],
+                      coords.coordinates[0][2][1]]
+                      .join(',');
         center = bounds.getCenter();
       }
       if (coords.type === 'Point') {
@@ -282,7 +311,8 @@ geo.models.PackageSearch = Backbone.Model.extend({
           'notes': rec.notes,
           'pkg_id': rec.id,
           'resources': rec.resources,
-          'bbox': bounds
+          'bbox': bounds,
+          'bboxString': bboxString
         },
         'geometry': {
           'type': 'Point',

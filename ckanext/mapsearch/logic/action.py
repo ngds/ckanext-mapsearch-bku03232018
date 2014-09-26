@@ -37,9 +37,8 @@ def get_wms_info(context, data_dict):
 
     try:
         id = data_dict.get('id')
-        pkg = p.toolkit.get_action('package_show')(None, {'id': id})
-        resources = filter(wms_resource, pkg.get('resources'))
-        this_data = map(get_wms_data, resources)
-        return this_data
+        resource = logic.action.get.resource_show(context, {'id': id})
+        data = get_wms_data(resource)
+        return data
     except:
-        return [{'ERROR':'SERVER_ERROR'}]
+        return {'Error':'Server error'}
