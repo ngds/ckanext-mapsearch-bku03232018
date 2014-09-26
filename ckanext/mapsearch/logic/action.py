@@ -1,4 +1,6 @@
 from ckanext.mapsearch.common import logic
+from ckanext.mapsearch.common import plugins as p
+from ckanext.mapsearch.model import ogc
 
 def get_package_json(context, data_dict):
     search = logic.action.get.package_search(context, data_dict)
@@ -18,3 +20,26 @@ def get_package_json(context, data_dict):
         return packages
     these_packages = make_package(search)
     return {'count': search['count'], 'packages': these_packages}
+
+def get_wms_info(context, data_dict):
+
+    def wms_resource(resource):
+        format = resource.get('format').lower()
+        if format in ['ogc:wms', 'wms']:
+            return True
+        else:
+            return False
+
+    def get_wms_data(resource):
+        resource_url = resource.get('url')
+        wms = ogc.HandleWMS(resource_url)
+        return wms.get_layer_info(resource)
+
+    try:
+        id = data_dict.get('id')
+        pkg = p.toolkit.get_action('package_show')(None, {'id': id})
+        resources = filter(wms_resource, pkg.get('resources'))
+        this_data = map(get_wms_data, resources)
+        return this_data
+    except:
+        return [{'ERROR':'SERVER_ERROR'}]

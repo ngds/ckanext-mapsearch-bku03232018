@@ -33,5 +33,6 @@ class MapSearch(p.SingletonPlugin):
 
     def get_actions(self):
         return {
-            'get_package_json': action.get_package_json
+            'get_package_json': action.get_package_json,
+            'get_wms_info': action.get_wms_info
         }

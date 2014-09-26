@@ -98,8 +98,22 @@ geo.models.PackageSearch = Backbone.Model.extend({
       callback(bbox);
     })
   },
+  getWms: function (id, callback) {
+    $.ajax({
+      url: '/api/action/get_wms_info',
+      type: 'POST',
+      data: JSON.stringify({'id': id}),
+      success: function (res) {
+
+      },
+      error: function (err) {
+
+      }
+    })
+  },
   makeSearchResult: function (data) {
-    var head
+    var model
+      , head
       , body
       , resources
       , resource
@@ -108,13 +122,21 @@ geo.models.PackageSearch = Backbone.Model.extend({
       , i
       ;
 
-    console.log(data);
-
+    model = this;
+    
     function makeResourceTab (url, text) {
       var html = '<div class="accordion-group" id="accordion-search-result">';
       html += '<div class="accordion-heading">';
       html += '<a class="data-ogc" target="_blank" href="'
         + url + '">' + text + '</a>';
+      html += '</div></div>';
+      return html;
+    }
+
+    function showWmsTab (url, text) {
+      html = '<div class="accordion-group" id="accordion-search-result">';
+      html += '<div class="accordion-heading">';
+      html += '<a id="' + data.id + '" class="toggle-layer-wms wms-absent">Show Web Map Service</a>';
       html += '</div></div>';
       return html;
     }
@@ -159,8 +181,6 @@ geo.models.PackageSearch = Backbone.Model.extend({
     }
 
     links = resourceTabs.join('');
-
-    console.log(links);
 
     head = (function () {
       var id
