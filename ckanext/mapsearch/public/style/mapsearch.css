@@ -141,3 +141,40 @@ html, body {
     overflow: auto;
     height: 600px;
 }
+
+.map-search-result {
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    border: 1px solid #e1e1e1;
+    margin-bottom: 20px;
+}
+
+.map-search-result .accordion-heading a {
+    color: black;
+    font-weight: bold;
+}
+
+.map-search-result .accordion-heading p {
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 12px;
+}
+
+.map-search-result .accordion-body .accordion-group {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.map-search-result .accordion-group {
+    border: none;
+}
+
+.map-search-result .accordion-group .accordion-body .accordion-group {
+    background-color: #00db8d;
+    border-radius: 0;
+    margin-bottom: 3px;
+}
+
+.map-search-result .accordion-group .accordion-body .accordion-group a {
+    color: #ffffff;
+}

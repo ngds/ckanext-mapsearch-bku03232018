@@ -93,7 +93,19 @@ geo.views.PackageSearch = Backbone.View.extend({
       ;
     model.set('query', text);
     model.postSearch(function (response) {
+      targetBtn = $('#toggle-results-tab');
+      otherBtn = $('#toggle-search-tab');
+
+      targetBtn.addClass('active');
+      otherBtn.removeClass('active');
+
+      targetTab = $('#results-tab');
+      otherTab = $('#search-tab');
+
+      otherTab.removeClass('active');
+      targetTab.addClass('active');
       view.renderResponse(response);
+
     })
   },
   renderResponse: function (data) {
@@ -104,7 +116,13 @@ geo.views.PackageSearch = Backbone.View.extend({
     var model
       , id
       , element
+      , layer
+      , values
+      , coords
+      , coord
+      , bounds
       , bbox
+      , i
       ;
 
     model = this.model;
@@ -112,7 +130,26 @@ geo.views.PackageSearch = Backbone.View.extend({
     element = $(e);
 
     if (element.hasClass('active')) {
-      bbox = model.get('bboxLayerGroup')[id];
+      layer = model.get('bboxLayerGroup')[id];
+      geo.map.removeLayer(layer);
+      element.removeClass('active');
+      element.text('Show Area on Map');
+    } else {
+      values = e.currentTarget.getAttribute('value').split(',');
+      coords = [];
+      for (i = 0; i < values.length; i++) {
+        coord = parseFloat(values[i]);
+        coords.push(coord);
+      }
+      bounds = [[coords[1], coords[0]], [coords[3], coords[2]]];
+      bbox = L.rectangle(bounds, {color: 'red', opacity: 1,
+        fillOpacity: 0.2, weight: 1});
+      model.get('bboxLayerGroup')[id] = bbox;
+      layer = model.get('bboxLayerGroup')[id];
+      geo.map.addLayer(layer);
+      geo.map.fitBounds(layer, {maxZoom: 6, padding: [200, 200]});
+      element.addClass('active');
+      element.text('Hide Area on Map');
     }
   },
   toggleWms: function (e) {
@@ -136,29 +173,24 @@ geo.views.PackageSearch = Backbone.View.extend({
         if (err) {
           alert('Error contacting host server.');
         } else {
-          var i
-            , result
-            , params
+          var params
             , bbox
             , layer
             ;
 
-          for (i = 0; i < res.length; i++) {
-            result = res[i];
-            params = {
-              'layers': result['layer'],
-              'format': result['format'],
-              'transparent': true,
-              'version': '1.1.1'
-            };
-            bbox = [[result.bbox[1], result.bbox[0]],
-                    [result.bbox[3], result.bbox[2]]];
-            layer = L.tileLayer.wms(result.service_url, params);
-            model.get('wmsLayerGroup')[id] = layer;
-            wms = model.get('wmsLayerGroup')[id];
-            geo.map.addLayer(wms);
-            geo.map.fitBounds(bbox);
-          }
+          params = {
+            'layers': res['layer'],
+            'format': res['format'],
+            'transparent': true,
+            'version': '1.1.1'
+          };
+          bbox = [[res.bbox[1], res.bbox[0]],
+                  [res.bbox[3], res.bbox[2]]];
+          layer = L.tileLayer.wms(res.service_url, params);
+          model.get('wmsLayerGroup')[id] = layer;
+          wms = model.get('wmsLayerGroup')[id];
+          geo.map.addLayer(wms);
+          geo.map.fitBounds(bbox);
           element.text('Hide Web Map Service');
         }
       })
