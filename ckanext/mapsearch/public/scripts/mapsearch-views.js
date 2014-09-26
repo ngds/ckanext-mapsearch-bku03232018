@@ -180,7 +180,7 @@ geo.views.PackageSearch = Backbone.View.extend({
 
           params = {
             'layers': res['layer'],
-            'format': res['format'],
+            'format': res['tile_format'],
             'transparent': true,
             'version': '1.1.1'
           };
