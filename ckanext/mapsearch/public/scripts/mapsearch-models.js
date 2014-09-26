@@ -274,6 +274,7 @@ geo.models.PackageSearch = Backbone.Model.extend({
       , bounds
       , center
       , geoJson
+      , marker
       , i
       ;
 
@@ -320,7 +321,16 @@ geo.models.PackageSearch = Backbone.Model.extend({
         }
       };
       model.makeSearchResult(geoJson);
-      layer.addLayer(new L.Marker(geoJson['geometry']['coordinates']));
+
+      marker = new L.Marker(geoJson['geometry']['coordinates'])
+        .bindPopup(rec.title);
+      marker.on('click', function () {
+        var toggle = $('#collapse-' + randomize)
+          , collapse = $()
+          ;
+      });
+
+      layer.addLayer(marker);
     }
   }
 });

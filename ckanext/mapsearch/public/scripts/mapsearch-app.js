@@ -1,17 +1,27 @@
 var root = this;
 root.geo == null ? geo = root.geo = {} : geo = root.geo;
 
-geo.initBounds = L.latLngBounds(
-  [51.919376, -130.227639],
-  [22.637598, -65.891701]
+geo.initialExtent = L.latLngBounds(
+  [50.919376, -130.227639],
+  [21.637598, -65.891701]
 );
 
-geo.mapOpts = {
+geo.mapOptions = {
   attributionControl: true,
   minZoom: 2
 };
 
-geo.map = L.map('map', geo.mapOpts).fitBounds(geo.initBounds);
+geo.map = L.map('map', geo.mapOptions).fitBounds(geo.initialExtent);
+
+geo.width = window.innerWidth;
+if (geo.width < 768) { geo.mapOptions['zoomControl'] = false; };
+
+if (geo.width > 768) {
+  geo.centerPoint = geo.map.getPixelOrigin().x;
+  geo.offset = geo.centerPoint * 0.4;
+  geo.pan = geo.centerPoint - geo.offset;
+  geo.map.panBy([geo.pan, 0]);
+}
 
 geo.baseMap = new geo.views.TileLayerView({
   model: new geo.models.TileLayer({
