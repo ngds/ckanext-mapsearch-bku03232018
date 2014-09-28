@@ -28,14 +28,26 @@
     <div id="map-content-tab" class="active">
       <div id="content-window">
         <div id="content-tab-btns" class="btn-group btn-justified">
-          <button id="toggle-search-tab" class="btn active">Make Search</button>
+          <button id="toggle-search-tab" class="btn active">Make Query</button>
           <button id="toggle-results-tab" class="btn">View Results</button>
         </div>
         <div class="map-tab-pane active" id="search-tab">
+          <p>
+            Search the catalog with <strong>textual keywords</strong> or with a
+            drawn <strong>geographic extent</strong>.  Combine methods to
+            refine the query and continue submitting queries to add scope.
+          </p>
           <div class="search-input-controls">
-            <input type="text" id="text-search">
-            <button id="draw-area" class="btn btn-large btn-block">Draw an area</button>
-            <button id="submit-search" class="btn btn-large btn-block">Search</button>
+            <div class="map-text-search">
+              <input type="text" id="text-search" placeholder="Enter some keywords">
+            </div>
+            <div class="map-area-search">
+              <button id="draw-area" class="btn btn-large btn-block">Draw an area</button>
+            </div>
+            <div class="map-search-controls">
+              <button id="submit-search" class="btn btn-large btn-block btn-primary">Search</button>
+              <button id="reset-search" class="btn btn-large btn-block btn-danger">Reset</button>
+            </div>
           </div>
         </div>
         <div class="map-tab-pane" id="results-tab">

@@ -51,3 +51,7 @@ geo.packageSearch = new geo.views.PackageSearch({
   el: $('#map-content-tab'),
   model: new geo.models.PackageSearch({})
 }).render();
+
+geo.sidebarMapScroll = new geo.views.SidebarMapScroll({
+  el: $('.leaflet-popup-pane')
+}).render();

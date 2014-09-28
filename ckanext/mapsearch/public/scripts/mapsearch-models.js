@@ -275,6 +275,7 @@ geo.models.PackageSearch = Backbone.Model.extend({
       , center
       , geoJson
       , marker
+      , content
       , i
       ;
 
@@ -322,13 +323,12 @@ geo.models.PackageSearch = Backbone.Model.extend({
       };
       model.makeSearchResult(geoJson);
 
+
+      content = rec.title + '<br><button id="' + randomize +
+        '" class="btn btn-small btn-success btn-block marker-btn" ' +
+        'type="button">More Information</button>';
       marker = new L.Marker(geoJson['geometry']['coordinates'])
-        .bindPopup(rec.title);
-      marker.on('click', function () {
-        var toggle = $('#collapse-' + randomize)
-          , collapse = $()
-          ;
-      });
+        .bindPopup(content);
 
       layer.addLayer(marker);
     }

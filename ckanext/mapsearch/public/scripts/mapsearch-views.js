@@ -77,6 +77,7 @@ geo.views.PackageSearch = Backbone.View.extend({
   events: {
     'click #draw-area': 'drawArea',
     'click #submit-search': 'submitSearch',
+    'click #reset-search': 'resetSearch',
     'click .toggle-wms-layer': 'toggleWms',
     'click .toggle-bbox': 'toggleBbox'
   },
@@ -107,6 +108,9 @@ geo.views.PackageSearch = Backbone.View.extend({
       view.renderResponse(response);
 
     })
+  },
+  resetSearch: function () {
+    location.reload();
   },
   renderResponse: function (data) {
     var model = this.model;
@@ -195,5 +199,20 @@ geo.views.PackageSearch = Backbone.View.extend({
         }
       })
     }
+  }
+});
+
+geo.views.SidebarMapScroll = Backbone.View.extend({
+  events: {
+    'click button': 'scrollSidebar'
+  },
+  scrollSidebar: function (e) {
+    var content = $('.result-' + e.currentTarget.id);
+
+    $('.id-' + e.currentTarget.id).removeClass('collapsed');
+    $('#collapse-' + e.currentTarget.id).addClass('in');
+
+    $('#search-results .results').prepend(content);
+    $('#search-results .results').animate({scrollTop: 0}, 'fast');
   }
 });

@@ -178,3 +178,15 @@ html, body {
 .map-search-result .accordion-group .accordion-body .accordion-group a {
     color: #ffffff;
 }
+
+.search-input-controls {
+    margin-top: 20px;
+}
+
+.search-input-controls #text-search {
+    height: 30px;
+}
+
+.map-search-controls {
+    margin-top: 30px;
+}
