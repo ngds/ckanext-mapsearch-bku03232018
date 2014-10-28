@@ -1,6 +1,5 @@
 ### ckanext-mapsearch
-CKAN extension that provides interfaces for creating, editing, harvesting and searching based on USGIN compliant 
-ISO metadata standards.
+CKAN extension geographical queries in the form of a web map interface.
 
 #### Dependencies
 * CKAN v2.3
