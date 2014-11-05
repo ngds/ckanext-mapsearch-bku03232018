@@ -84,10 +84,10 @@ class TestMapSearchAction(object):
         headers = {'content-type': 'application/x-www-form-urlencoded','encoding':'utf-8', 'X-Requested-With':'XMLHttpRequest'}
         try:
             oResponse = requests.post("http://%s/%s/%s" % (self.host, self.ckan_api_path, 'get_wms_info'),  data=json.dumps(params), headers=headers)
-            #jsonResponseData = oResponse.json()
-            #assert jsonResponseData['success']
+            jsonResponseData = oResponse.json()
 
             assert oResponse.status_code == 200
+            assert jsonResponseData['success']
         except requests.ConnectionError:
             print "failed to connect"
             assert False
