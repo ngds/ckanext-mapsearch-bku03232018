@@ -3,6 +3,7 @@ import ConfigParser
 import os
 import requests
 import json
+import uuid
 
 class TestMapSearchAction(object):
 
@@ -80,7 +81,7 @@ class TestMapSearchAction(object):
     def test_GetWmsInfoAction(self):
         print 'test_GetWmsInfoAction(): Running actual test code ..........................'
 
-        params = {"extras":{}}
+        params = {"id":str(uuid.uuid4())}
         headers = {'content-type': 'application/x-www-form-urlencoded','encoding':'utf-8', 'X-Requested-With':'XMLHttpRequest'}
         try:
             oResponse = requests.post("http://%s/%s/%s" % (self.host, self.ckan_api_path, 'get_wms_info'),  data=json.dumps(params), headers=headers)
