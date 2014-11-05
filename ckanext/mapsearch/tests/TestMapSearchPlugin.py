@@ -17,14 +17,17 @@ class TestMapSearchPlugin(object):
                                  'tests_config.cfg'))
 
         self.host = config.get('tests', 'ckan_host')
+	self.path = config.get('tests', 'ckan_mapsearch_path')
 
         if not self.host:
             raise Exception('You must add a Host to the tests '
                             ' configuration file')
 
-        self.oMapSearch = pluginMapSearch.MapSearch()
-        #pprint.pprint(config)
+	if not self.path:
+            raise Exception('You must add a MapSearch path to the tests '
+                            ' configuration file')
 
+        self.oMapSearch = pluginMapSearch.MapSearch()
 
     #teardown_class executes (auto once) after anything in this class
     @classmethod
@@ -32,8 +35,10 @@ class TestMapSearchPlugin(object):
         print ("")
         self.oMapSearch = None
         self.host = None
+	self.path = None
         del self.oMapSearch
         del self.host
+	del self.path
 
     #setup executes before each method in this class
     def setup(self):
@@ -62,7 +67,7 @@ class TestMapSearchPlugin(object):
 
         import requests
         try:
-            oResponse = requests.head("http://%s/%s" % (self.host, 'map_search'))
+            oResponse = requests.head("http://%s/%s" % (self.host, self.path))
             assert oResponse.status_code == 200
         except requests.ConnectionError:
             print "failed to connect"
