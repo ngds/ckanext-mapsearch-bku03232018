@@ -4,6 +4,8 @@ import os
 import requests
 import json
 import uuid
+import string
+import random
 
 class TestMapSearchAction(object):
 
@@ -62,7 +64,10 @@ class TestMapSearchAction(object):
     def test_GetPackageJsonAction(self):
         print 'test_GetPackageJsonAction(): Running actual test code ..........................'
 
-        params = {"extras":{"ext_bbox":"-180,-90,180,90"},"q":"false_texte+res_url:*+","rows":1,"sort":"","start":0}
+        def textGenerator(size=6, chars=string.ascii_uppercase + string.digits):
+            return ''.join(random.choice(chars) for _ in range(size))
+
+        params = {"extras":{"ext_bbox":"-180,-90,180,90"},"q":textGenerator()+"+res_url:*+","rows":1,"sort":"","start":0}
         headers = {'content-type': 'application/x-www-form-urlencoded','encoding':'utf-8', 'X-Requested-With':'XMLHttpRequest'}
         try:
 	    oResponse = requests.post("http://%s/%s/%s" % (self.host, self.ckan_api_path, 'get_package_json'),  data=json.dumps(params), headers=headers)
