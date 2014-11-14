@@ -206,9 +206,6 @@ class TestMapSearchAction(object):
         try:
             result = self.actions.get_wms_info(context, data_dict)
 
-            import pprint
-            pprint.pprint(result)
-
             assert 'srs' in result
             assert 'layer' in result
             assert 'bbox' in result
