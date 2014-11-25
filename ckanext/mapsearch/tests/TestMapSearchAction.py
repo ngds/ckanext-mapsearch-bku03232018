@@ -158,6 +158,25 @@ class TestMapSearchAction(object):
             print "Data returned is not type of json or attribute 'success' is missing"
             assert False
 
+    #Test Bad request map_search action get_package_json response (data) and the response status code is 400
+    def testBadRequest_GetPackageJsonAction(self):
+        print 'testBadRequest_GetPackageJsonAction(): Running actual test code ..........................'
+
+        def textGenerator(size=6, chars=string.ascii_uppercase + string.digits):
+            return ''.join(random.choice(chars) for _ in range(size))
+
+        params = {"extras":{"ext_bbox":"-180,-90,180,90"},"q":textGenerator()+"+res_url:*+","rows":1,"sort":"","start":0}
+        try:
+            oResponse = requests.post("http://%s/%s/%s" % (self.host, self.ckan_api_path, 'get_package_json'),  data=json.dumps(params))
+	    
+            assert oResponse.status_code == 400
+        except requests.ConnectionError:
+            print "failed to connect"
+            assert False
+        except:
+            print "Data returned is not type of json or attribute 'success' is missing"
+            assert False
+    
     #Check map_search action get_wms_info response status code is 200 (This function returns nothing)
     def test_GetWmsInfoAction(self):
         print 'test_GetWmsInfoAction(): Running actual test code ..........................'
@@ -170,6 +189,20 @@ class TestMapSearchAction(object):
 
             assert oResponse.status_code == 200
             assert jsonResponseData['success']
+        except requests.ConnectionError:
+            print "failed to connect"
+            assert False
+
+    #Test Bad request map_search action get_wms_info response status code is 400
+    def testBadRequest_GetWmsInfoAction(self):
+        print 'testBadRequest_GetWmsInfoAction(): Running actual test code ..........................'
+
+        params = {"id":str(uuid.uuid4())}
+
+        try:
+            oResponse = requests.post("http://%s/%s/%s" % (self.host, self.ckan_api_path, 'get_wms_info'),  data=json.dumps(params))
+
+            assert oResponse.status_code == 400
         except requests.ConnectionError:
             print "failed to connect"
             assert False
@@ -189,6 +222,21 @@ class TestMapSearchAction(object):
 
         assert result['count'] == 1
         assert result['packages'][0]['name'] == keyword
+
+    #Test bad map search package json behavior (search only for created dataset)
+    def testBad_mapSearchPackageJson(self):
+        print 'testBad_mapSearchPackageJson(): Running actual test code ..........................'
+
+        context = {'model': model,
+                   'session': model.Session,
+                   'user': self.sysadmin_user.name}
+
+        keywordBad = "test_org_dataset_mapsearch_bad"
+        data_dict = {"q":"name:"+keywordBad}
+
+        result = self.actions.get_package_json(context, data_dict)
+
+        assert result['count'] == 0
 
     #test map search wms info behavior
     def test_mapSearchWmsInfo(self):
@@ -225,3 +273,24 @@ class TestMapSearchAction(object):
         except:
             print "Data returned is not correct or one or more of important fields are missing"
             assert False
+
+    #test bad map search wms info behavior
+    def testBad_mapSearchWmsInfo(self):
+        print 'testBad_mapSearchWmsInfo(): Running actual test code ..........................'
+
+        def is_array(var):
+            return isinstance(var, (list, tuple))
+
+        context = {'model': model,
+                   'session': model.Session,
+                   'user': self.sysadmin_user.name}
+
+        data_dict = {"id": str(uuid.uuid4())}
+
+        try:
+            result = self.actions.get_wms_info(context, data_dict)
+
+	    assert result == ''
+        except:
+            print "Resource ID provided doesn't exist."
+            pass 

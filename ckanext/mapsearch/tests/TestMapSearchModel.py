@@ -65,3 +65,14 @@ class TestMapSearchModel(object):
     	except:
     	    print "Data returned is not correct or one or more of important fields are missing"
     	    assert False
+
+    #testBad handleWMSWrongUrl model instantiation method
+    def testBad_handleWMSWrongUrl(self):
+        print 'testBad_handleWMSWrongUrl(): Running actual test code ..........................'
+
+        try:
+            self.oBadHandleWMS = mapSearchModel.HandleWMS('http://wrong-url.com/wrong?')
+
+        except:
+            print "Link provided is wrong."
+            pass
