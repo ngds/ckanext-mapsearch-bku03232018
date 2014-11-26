@@ -27,10 +27,10 @@ ckan.plugins = ... ... mapsearch
 Before running tests, there are 2 configs files for test, need to be configured regarding the test environment of your machine:
 - ckanext-mapsearch/test.ini: overrides ckan environment.ini variables or you can point it into a different environment.ini (e.g: use different database for test)
 - ckanext-mapsearch/ckanext/mapsearch/tests/tests_config.cfg:
--- ckan_host: by default, CKAN Host on your machine
--- ckan_web_map_service_url: by default, webMapService (WmsServer service).
--- ckan_mapsearch_path: by default, MapSearch URI
--- ckan_api_path: by default, ckan API URI
+> ckan_host: by default, CKAN Host on your machine
+> ckan_web_map_service_url: by default, webMapService (WmsServer service).
+> ckan_mapsearch_path: by default, MapSearch URI
+> ckan_api_path: by default, ckan API URI
 
 #### Step 2
 Command line to perform the tests:
