@@ -202,6 +202,8 @@ geo.models.PackageSearch = Backbone.Model.extend({
       }
     }
 
+    resourceTabs.push(makeResourceTab('/dataset/' + package.pkg_id, 'Data Details Page'))
+
     links = resourceTabs.join('');
 
     head = (function () {
