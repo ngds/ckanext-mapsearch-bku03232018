@@ -197,7 +197,7 @@ geo.models.PackageSearch = Backbone.Model.extend({
       if (resource.url.indexOf('.tif') > 0 || resource.url.indexOf('.tiff') > 0) {
         resourceTabs.push(makeResourceTab(resource.url, 'TIFF Resource'));
       }
-      if (!resource.format && resource.url) {
+      if (!resource.format && resource.url && resource.url.indexOf('notifications.usgin.org') < 0) {
         resourceTabs.push(makeResourceTab(resource.url, 'External Website'))
       }
     }
