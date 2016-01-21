@@ -1,6 +1,7 @@
 var root = this;
 root.geo == null ? geo = root.geo = {} : geo = root.geo;
 geo.models == null ? geo.models = geo.models = {} : geo.models = geo.models;
+var ptCount;
 
 geo.models.LayerModel = Backbone.Model.extend({
   defaults: {
@@ -66,8 +67,9 @@ geo.models.PackageSearch = Backbone.Model.extend({
           , html
           , className
           ;
-
+               
         count = cluster.getChildCount();
+
         if (count < 10) {
           html = '<b style="margin-left:10px;vertical-align:-7px;">'
             + count + '</b>';
@@ -222,6 +224,7 @@ geo.models.PackageSearch = Backbone.Model.extend({
         desc = 'No description available';
       }
       html = '<li class="map-search-result result-' + id + '" >';
+      
       html += '<div class="accordion" id="accordion-search">';
       html += '<div class="accordion-group">';
       html += '<div class="accordion-heading">';
@@ -284,6 +287,9 @@ geo.models.PackageSearch = Backbone.Model.extend({
     model = this;
     layer = model.get('resultsFeatureGroup');
     result = input['result']['packages'];
+    if ( isNaN(ptCount) ) { ptCount = 0; }
+    ptCount = ptCount + result.length;
+    console.log('results count ' + result.length);
     for (i = 0; i < result.length; i++) {
       rec = result[i];
       randomize = Math.floor(Math.random() * 1000000000000000000000);
@@ -305,6 +311,7 @@ geo.models.PackageSearch = Backbone.Model.extend({
           lat: parseFloat(coords.coordinates[1]),
           lng: parseFloat(coords.coordinates[0])
         }
+        
       }
       geoJson = {
         'type': 'Feature',

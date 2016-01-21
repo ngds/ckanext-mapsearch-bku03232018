@@ -1,5 +1,6 @@
 var root = this;
 root.geo == null ? geo = root.geo = {} : geo = root.geo;
+var sumCount = 0;
 
 geo.initialExtent = L.latLngBounds(
   [50.919376, -130.227639],

@@ -102,14 +102,16 @@ geo.views.PackageSearch = Backbone.View.extend({
 
       targetTab = $('#results-tab');
       otherTab = $('#search-tab');
-
       otherTab.removeClass('active');
       targetTab.addClass('active');
       view.renderResponse(response);
+      var totC = sumCount + ptCount;
+      $('#result-count').text("Datasets found " + ptCount);
 
     })
   },
   resetSearch: function () {
+    ptCount = 0;
     location.reload();
   },
   renderResponse: function (data) {
